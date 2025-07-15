@@ -2,7 +2,7 @@ import axios from "axios";
 
 // URL base del backend
 const API = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: "https://task-manager-api-bnps.onrender.com",
 });
 
 // Incluir token automáticamente si existe
