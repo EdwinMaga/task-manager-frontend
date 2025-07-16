@@ -79,57 +79,62 @@ const Tasks = () => {
   navigate("/");
 };
 
-const styles = {
-  logoutButton: {
-    backgroundColor: "#f44336",
-    color: "white",
-    border: "none",
-    padding: "8px 12px",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-};
-
 return (
-  <div style={{ maxWidth: 600, margin: "auto", padding: 20 }}>
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-      <h2>Mis tareas</h2>
-      <button onClick={handleLogout} style={styles.logoutButton}>
-        Cerrar sesión
-      </button>
-    </div>
-
-    <form onSubmit={handleCreate} style={{ marginBottom: 20 }}>
-      <input
-        type="text"
-        placeholder="Título"
-        value={newTask.title}
-        onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-        required
-        style={{ padding: 8, width: "100%", marginBottom: 8 }}
-      />
-      <textarea
-        placeholder="Descripción"
-        value={newTask.description}
-        onChange={(e) =>
-          setNewTask({ ...newTask, description: e.target.value })
-        }
-        style={{ padding: 8, width: "100%" }}
-      />
-      <button type="submit" style={{ padding: 10, marginTop: 10 }}>
-        Crear tarea
-      </button>
-    </form>
-
-    {tasks.map((task) => (
-      <TaskCard
-        key={task.id}
-        task={task}
-        onDone={markDone}
-        onDelete={deleteTask}
-      />
-    ))}
+<div className="max-w-2xl mx-auto p-6">
+  {/* Header y botón de logout */}
+  <div className="flex justify-between items-center mb-6">
+    <h2 className="text-2xl font-bold text-gray-800">Mis tareas</h2>
+    <button
+      onClick={handleLogout}
+      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+    >
+      Cerrar sesión
+    </button>
   </div>
+
+  {/* Formulario para crear nueva tarea */}
+  <form onSubmit={handleCreate} className="space-y-4 mb-6">
+    <input
+      type="text"
+      placeholder="Título"
+      value={newTask.title}
+      onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+      required
+      className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+    />
+    <textarea
+      placeholder="Descripción"
+      value={newTask.description}
+      onChange={(e) =>
+        setNewTask({ ...newTask, description: e.target.value })
+      }
+      className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+    />
+    <button
+      type="submit"
+      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+    >
+      Crear tarea
+    </button>
+  </form>
+
+  {/* 🧾 Listado de tareas */}
+  <div className="space-y-4">
+    {tasks.length === 0 ? (
+      <p className="text-gray-500 text-sm">No tienes tareas aún.</p>
+    ) : (
+      tasks.map((task) => (
+        <TaskCard
+          key={task.id}
+          task={task}
+          onDone={markDone}
+          onDelete={deleteTask}
+        />
+      ))
+    )}
+  </div>
+</div>
+
 );
 };
 

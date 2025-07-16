@@ -4,56 +4,67 @@ import { register } from "../services/api";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError("");
-
     try {
-      await register(email, password);
+      await register(form.email, form.password);
       navigate("/");
     } catch (err) {
-      setError("El correo ya está registrado.");
+      setError("Ocurrió un error al registrarte.");
     }
   };
 
   return (
-    <div style={styles.container}>
-      <h2>Registro</h2>
-      <form onSubmit={handleRegister} style={styles.form}>
-        <input
-          type="email"
-          placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <button type="submit" style={styles.button}>Registrarse</button>
-        {error && <p style={styles.error}>{error}</p>}
-      </form>
-      <p>¿Ya tienes cuenta? <a href="/">Inicia sesión</a></p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+          Crear cuenta
+        </h2>
+
+        {error && (
+          <p className="text-red-600 text-sm mb-4 text-center">{error}</p>
+        )}
+
+        <form onSubmit={handleRegister} className="space-y-4">
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-400"
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-400"
+          />
+          <button
+            type="submit"
+            className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+          >
+            Registrarse
+          </button>
+        </form>
+
+        <p className="text-sm text-center mt-4 text-gray-600">
+          ¿Ya tienes cuenta?{" "}
+          <span
+            className="text-blue-600 cursor-pointer hover:underline"
+            onClick={() => navigate("/")}
+          >
+            Inicia sesión
+          </span>
+        </p>
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: { maxWidth: 400, margin: "auto", padding: 20, textAlign: "center" },
-  form: { display: "flex", flexDirection: "column", gap: 12 },
-  input: { padding: 10, fontSize: 16 },
-  button: { padding: 10, fontSize: 16, cursor: "pointer" },
-  error: { color: "red", marginTop: 10 }
 };
 
 export default Register;
