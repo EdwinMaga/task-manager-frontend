@@ -6,14 +6,20 @@ const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);  // activa loading
+    setError("");      // limpia errores anteriores
+
     try {
       await register(form.email, form.password);
       navigate("/");
     } catch (err) {
       setError("Ocurrió un error al registrarte.");
+    } finally {
+      setLoading(false); // siempre desactiva loading
     }
   };
 
@@ -47,9 +53,12 @@ const Register = () => {
           />
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+            disabled={loading}
+            className={`w-full py-2 rounded text-white transition ${
+              loading ? "bg-green-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
+            }`}
           >
-            Registrarse
+            {loading ? "Registrando..." : "Registrarse"}
           </button>
         </form>
 

@@ -6,15 +6,21 @@ const Login = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true); // activa loading
+    setError("");     // limpia errores previos
+
     try {
       const res = await login(form.email, form.password);
       localStorage.setItem("token", res.data.access_token);
       navigate("/tasks");
     } catch (err) {
       setError("Credenciales incorrectas");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,9 +54,12 @@ const Login = () => {
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+            disabled={loading} // deshabilita si está cargando
+            className={`w-full py-2 rounded text-white transition ${
+              loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+            }`}
           >
-            Entrar
+            {loading ? "Cargando..." : "Entrar"}
           </button>
         </form>
 
